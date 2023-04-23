@@ -5,12 +5,20 @@ import { useState } from 'react'
 
 function App() {
 
-  const [accesstoken, setAccesstoken] = useState(localStorage.getItem("accesstoken"))
-  const [refreshtoken, setRefreshtoken] = useState(localStorage.getItem("refreshtoken"))
+  let accesstokenx = localStorage.getItem("accesstoken")
+  let refreshtokenx = localStorage.getItem("refreshtoken")
+
+  if(!accesstokenx || accesstokenx == "undefined") {
+    accesstokenx = sessionStorage.getItem("accesstoken")
+    refreshtokenx = sessionStorage.getItem("refreshtoken")
+  }
+
+  const [accesstoken, setAccesstoken] = useState(accesstokenx)
+  const [refreshtoken, setRefreshtoken] = useState(refreshtokenx)
 
   if (accesstoken && accesstoken != "undefined") {
     return (
-      <Navbar/>
+      <Navbar setAccesstoken={setAccesstoken}/>
     )
   }
 
