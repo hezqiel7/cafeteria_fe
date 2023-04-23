@@ -1,7 +1,7 @@
-function Login() {
+function Login(props) {
 
     const handleSubmit = (e) => {
-        event.preventDefault();
+        e.preventDefault();
 
         // Lee los datos del formulario
         const form = e.target;
@@ -13,6 +13,8 @@ function Login() {
             // Guardar el token JWT en el Local Storage
             localStorage.setItem('accesstoken', data.access);
             localStorage.setItem('refreshtoken', data.refresh);
+            props.setAccesstoken(data.access)
+            // setRefreshtoken(data.refresh)
         })
         .catch(error => console.error(error));
 
@@ -23,13 +25,13 @@ function Login() {
             <form method="post" onSubmit={handleSubmit}>
                 {/* Email input */}
                 <div className="form-floating mb-4">
-                    <input type="text" className="form-control" id="floatingUsername" name="username"/>
-                    <label htmlFor="floatingUsername">Email</label>
+                    <input type="text" className="form-control" id="floatingUsername" name="username" placeholder="Usuario"/>
+                    <label htmlFor="floatingUsername">Usuario</label>
                 </div>
 
                 {/* Password input */}
                 <div className="form-floating mb-4">
-                    <input type="password" className="form-control" id="floatingPassword" name="password"/>
+                    <input type="password" className="form-control" id="floatingPassword" name="password" placeholder="Contraseña"/>
                     <label htmlFor="floatingPassword">Contraseña</label>
                 </div>
 

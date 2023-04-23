@@ -1,16 +1,23 @@
 import './css/App.css'
 import Navbar from './Navbar'
 import Login from './Login'
+import { useState } from 'react'
 
 function App() {
 
-  return (
-    <>
+  const [accesstoken, setAccesstoken] = useState(localStorage.getItem("accesstoken"))
+  const [refreshtoken, setRefreshtoken] = useState(localStorage.getItem("refreshtoken"))
+
+  if (accesstoken && accesstoken != "undefined") {
+    return (
       <Navbar/>
-      <div className='container'>
-        <Login/>
-      </div>
-    </>
+    )
+  }
+
+  return (
+    <div className='container h-100 d-flex justify-content-center align-items-center'>
+      <Login setAccesstoken={setAccesstoken}/>
+    </div>
   )
 }
 
