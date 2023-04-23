@@ -41,7 +41,8 @@ function Login(props) {
     }
 
     return (
-        <div className="container-login">
+        <div className="container-login text-center">
+            <img src="src\assets\coffee.png" alt="Logo cafetería" className='w-50 mb-4'/>
             <form method="post" onSubmit={handleSubmit}>
                 {/* Email input */}
                 <div className="form-floating mb-4">
