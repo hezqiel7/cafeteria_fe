@@ -1,7 +1,8 @@
 import './css/App.css'
+import { useState } from 'react'
 import Navbar from './Navbar'
 import Login from './Login'
-import { useState } from 'react'
+import Pedidos from './Pedidos'
 
 function App() {
 
@@ -18,7 +19,10 @@ function App() {
 
   if (accesstoken && accesstoken != "undefined") {
     return (
-      <Navbar setAccesstoken={setAccesstoken}/>
+      <>
+        <Navbar setAccesstoken={setAccesstoken}/>
+        <Pedidos accesstoken={accesstoken}/>
+      </>
     )
   }
 
