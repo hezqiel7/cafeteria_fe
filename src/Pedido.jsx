@@ -36,13 +36,13 @@ const Pedido = ({accesstoken, id, fecha, mesa, precio}) => {
                             )
                         })
                     :
-                        <p class="card-text placeholder-glow text-center">
-                            <span class="placeholder col-6 mx-1"></span>
-                            <span class="placeholder col-4 mx-1"></span>
-                            <span class="placeholder col-4 mx-1"></span>
-                            <span class="placeholder col-6 mx-1"></span>
-                            <span class="placeholder col-8 mx-1"></span>
-                            <span class="placeholder col-2 mx-1"></span>
+                        <p className="card-text placeholder-glow text-center">
+                            <span className="placeholder col-6 mx-1"></span>
+                            <span className="placeholder col-4 mx-1"></span>
+                            <span className="placeholder col-4 mx-1"></span>
+                            <span className="placeholder col-6 mx-1"></span>
+                            <span className="placeholder col-8 mx-1"></span>
+                            <span className="placeholder col-2 mx-1"></span>
                         </p>
                     }
                 </ul> 
