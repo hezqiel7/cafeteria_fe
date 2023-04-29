@@ -29,7 +29,7 @@ function Productos({accesstoken, productosElegidos, setProductosElegidos}) {
         <ul className="list-group gap">
             {productos && productos.map(producto => (
                 <li
-                    className={"list-group-item list-group-item-action list-group-item-warning "
+                    className={"list-group-item list-group-item-action list-group-item-info "
                                 .concat(productosElegidos.find(p => p.id === producto.id) ? "disabled" : "")}
                     key={producto.id}
                     producto_id={producto.id}

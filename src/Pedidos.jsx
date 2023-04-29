@@ -25,7 +25,7 @@ function Pedidos({accesstoken}) {
   }, [])
 
   const handleClickNuevo = () => {
-    setMostrarNuevo(true);
+    setMostrarNuevo(!mostrarNuevo);
   };
 
   const handleCLickQuitar = (e) => {
@@ -36,14 +36,27 @@ function Pedidos({accesstoken}) {
     setProductosElegidos(arr)
   }
 
+  const handleEnviarPedido = () => {
+
+  }
+
   return (
     <div className="container">
       <div className="d-flex py-2 justify-content-between align-items-center">
-        {!mostrarNuevo && <div className="form-check form-switch display-6 fs-5">
-            <input className="form-check-input" type="checkbox" role="switch" id="chkMostrarListos" onChange={e => setMostrarListos(e.target.checked)}/>
-            <label className="form-check-label" htmlFor="chkMostrarListos">Mostrar pedidos listos</label>
-        </div>}
-        <button className="btn btn-primary" onClick={handleClickNuevo}>Nuevo</button>
+        {!mostrarNuevo ?
+          <>
+            <div className="form-check form-switch display-6 fs-5">
+              <input className="form-check-input" type="checkbox" role="switch" id="chkMostrarListos" onChange={e => setMostrarListos(e.target.checked)}/>
+              <label className="form-check-label" htmlFor="chkMostrarListos">Mostrar pedidos listos</label>
+            </div>
+            <button className="btn btn-primary" onClick={handleClickNuevo}>Nuevo</button>    
+          </>
+        :
+          <>
+            <button className="btn btn-success" onClick={handleEnviarPedido}>Enviar pedido</button>
+            <button className="btn btn-secondary" onClick={handleClickNuevo}>Cancelar</button>
+          </>
+        }
       </div>
         {!mostrarNuevo ?
           <div className="d-flex gap-3 justify-content-center flex-wrap mt-3">
@@ -93,7 +106,7 @@ function Pedidos({accesstoken}) {
                 </div>
               </div>
             }
-              <form className="py-3 w-100 p-3">
+              <div className="py-3 w-100 p-3">
                 {/* <div className="form-floating mb-4">
                   <input type="text" className="form-control" id="nombre" placeholder="Nombre"/>
                   <label htmlFor="nombre" className="form-label-sm text-secondary">Nombre</label>
@@ -103,7 +116,7 @@ function Pedidos({accesstoken}) {
                   productosElegidos={productosElegidos}
                   setProductosElegidos={setProductosElegidos}
                 />
-              </form>
+              </div>
           </div>
         }
     </div>

@@ -4,6 +4,7 @@ const Pedido = ({accesstoken, id, fecha, mesa, precio}) => {
 
     let aux = 0;
     const [productos, setProductos] = useState(null)
+    const  [animation, setAnimation] = useState(false)
 
     useEffect(() => {
         fetch(`http://localhost:8000/pedidos/${id}/productos/`, {
@@ -14,6 +15,13 @@ const Pedido = ({accesstoken, id, fecha, mesa, precio}) => {
 		.then(response => response.json())
         .then(data => setProductos(data))
     }, [])
+
+    const handleClickListo = () => {
+        setAnimation(true)
+        setTimeout(() => {
+            setAnimation(false)
+          }, 908);
+    }
 
     return(
         <div className="card" style={{width: "300px"}}>
@@ -48,7 +56,7 @@ const Pedido = ({accesstoken, id, fecha, mesa, precio}) => {
                 </ul> 
             </div>
             <div className="card-footer d-grid">
-                <button className="btn btn-success fw-bold" type="button">✓</button>
+                <button className="btn btn-success" type="button" onClick={handleClickListo}><i className={"fa-solid fa-circle-check fa-xl ".concat(animation ? "fa-bounce" : "")}></i></button>
             </div>
         </div> 
     )
