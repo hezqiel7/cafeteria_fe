@@ -11,3 +11,11 @@
 nav {
     height: 60px;
 }
+
+.list-group-item-action {
+    cursor: pointer;
+}
+
+#botonQuitar {
+    cursor: pointer;
+}
