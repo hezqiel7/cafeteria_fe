@@ -85,8 +85,6 @@ function Pedidos({ accesstoken }) {
       nombre_cliente: nombreCliente,
     };
 
-    console.log(data);
-
     fetch("http://localhost:8000/pedidos/", {
       headers: {
         Authorization: "Bearer " + accesstoken,
@@ -94,9 +92,13 @@ function Pedidos({ accesstoken }) {
       },
       method: "POST",
       body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    }).then((response) => response.json());
+
+    setNombreCliente(null);
+    setMesa(null);
+    setProductosElegidos([]);
+    setTotalPrecio(0);
+    setMostrarNuevo(false);
   };
 
   return (
