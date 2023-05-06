@@ -4,7 +4,7 @@ import Productos from "./Productos";
 
 function Pedidos({ accesstoken }) {
   const [pedidos, setPedidos] = useState([]);
-  const [mostrarlistos, setMostrarListos] = useState(null);
+  const [mostrarlistos, setMostrarListos] = useState(false);
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
   const [productosElegidos, setProductosElegidos] = useState([]);
   const [totalPrecio, setTotalPrecio] = useState(0);
@@ -113,9 +113,10 @@ function Pedidos({ accesstoken }) {
                 role="switch"
                 id="chkMostrarListos"
                 onChange={(e) => setMostrarListos(e.target.checked)}
+                checked={mostrarlistos}
               />
               <label className="form-check-label" htmlFor="chkMostrarListos">
-                Mostrar pedidos listos
+                Mostrar solo pedidos listos
               </label>
             </div>
             <button className="btn btn-primary" onClick={handleClickNuevo}>
@@ -139,14 +140,16 @@ function Pedidos({ accesstoken }) {
           {pedidos &&
             pedidos.map((pedido) =>
               mostrarlistos ? (
-                <Pedido
-                  key={pedido.id}
-                  accesstoken={accesstoken}
-                  id={pedido.id}
-                  fecha={pedido.fecha_pedido}
-                  mesa={pedido.mesa}
-                  precio={pedido.total_precio}
-                />
+                pedido.listo && (
+                  <Pedido
+                    key={pedido.id}
+                    accesstoken={accesstoken}
+                    id={pedido.id}
+                    fecha={pedido.fecha_pedido}
+                    mesa={pedido.mesa}
+                    precio={pedido.total_precio}
+                  />
+                )
               ) : !pedido.listo ? (
                 <Pedido
                   key={pedido.id}
