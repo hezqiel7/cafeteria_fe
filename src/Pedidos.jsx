@@ -148,6 +148,13 @@ function Pedidos({ accesstoken }) {
                     fecha={pedido.fecha_pedido}
                     mesa={pedido.mesa}
                     precio={pedido.total_precio}
+                    cliente={pedido.nombre_cliente}
+                    icon="fa-solid fa-user-check "
+                    color="btn-success"
+                    lista_productos_id={pedido.lista_productos}
+                    pedidos={pedidos}
+                    setPedidos={setPedidos}
+                    listo={pedido.listo}
                   />
                 )
               ) : !pedido.listo ? (
@@ -159,6 +166,13 @@ function Pedidos({ accesstoken }) {
                   mesa={pedido.mesa}
                   precio={pedido.total_precio}
                   listo={pedido.listo}
+                  cliente={pedido.nombre_cliente}
+                  icon="fa-solid fa-circle-check fa-xl "
+                  color="btn-primary"
+                  lista_productos_id={pedido.lista_productos}
+                  pedidos={pedidos}
+                  setPedidos={setPedidos}
+                  pedido={pedido.listo}
                 />
               ) : null
             )}
