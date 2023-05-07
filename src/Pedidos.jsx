@@ -23,6 +23,9 @@ function Pedidos({ accesstoken }) {
           sessionStorage.clear();
           // Renovar token
         }
+        data.sort(
+          (a, b) => new Date(a.fecha_pedido) - new Date(b.fecha_pedido)
+        );
         setPedidos(data);
       });
   }, []);
