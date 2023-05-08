@@ -8,9 +8,9 @@ function Productos({
   setTotalPrecio,
   editable,
 }) {
+  const productos = useRef(null); // Lista de productos completa
   const idMasGrande = useRef(null);
-  const [listaProductos, setListaProductos] = useState(null);
-  const [buscar, setBuscar] = useState(null);
+  const [listaProductos, setListaProductos] = useState(null); // Lista de productos con el filtro de busqueda
   const [mostrarDetalle, setMostrarDetalle] = useState(null);
 
   useEffect(() => {
@@ -21,6 +21,7 @@ function Productos({
     })
       .then((response) => response.json())
       .then((data) => {
+        productos.current = data;
         setListaProductos(data);
         setMostrarDetalle(data[0]);
       });
@@ -44,8 +45,7 @@ function Productos({
 
   const handleChangeBuscar = (e) => {
     const data = e.target.value;
-    setBuscar(data);
-    let lista_productos = listaProductos.filter((p) => {
+    let lista_productos = productos.current.filter((p) => {
       // Normalizar para ignorar cualquier tilde
       let nombre = p.nombre
         .toLowerCase()
@@ -57,7 +57,6 @@ function Productos({
         .replace(/[\u0300-\u036f]/g, "");
       return nombre.includes(buscado);
     });
-
     setListaProductos(lista_productos);
   };
 
@@ -67,6 +66,9 @@ function Productos({
       return actual.id > anterior.id ? actual : anterior;
     }).id;
 
+    const lista = document.getElementsByClassName("list-group-item");
+    for (let i = 0; i < lista.length; i++) lista[i].classList.add("disabled");
+
     setMostrarDetalle({
       id: idMasGrande.current + 1,
       nombre: "",
@@ -75,24 +77,32 @@ function Productos({
   };
 
   const handleClickEliminar = () => {
-    const id = mostrarDetalle.id;
+    if (!idMasGrande.current) {
+      const id = mostrarDetalle.id;
 
-    fetch(`http://localhost:8000/productos/${id}/`, {
-      headers: {
-        Authorization: "Bearer " + accesstoken,
-      },
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          const arr = [...listaProductos];
-          const index = arr.findIndex((p) => p.id === id);
-          arr.splice(index, 1);
-          setListaProductos(arr);
-          setMostrarDetalle(listaProductos[0]);
-        }
+      fetch(`http://localhost:8000/productos/${id}/`, {
+        headers: {
+          Authorization: "Bearer " + accesstoken,
+        },
+        method: "DELETE",
       })
-      .catch((error) => console.log(error));
+        .then((response) => {
+          if (response.ok) {
+            const arr = [...listaProductos];
+            const index = arr.findIndex((p) => p.id === id);
+            arr.splice(index, 1);
+            setListaProductos(arr);
+            setMostrarDetalle(listaProductos[0]);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      const lista = document.getElementsByClassName("list-group-item");
+      for (let i = 0; i < lista.length; i++)
+        lista[i].classList.remove("disabled");
+      idMasGrande.current = null;
+      setMostrarDetalle(listaProductos[0]);
+    }
   };
 
   const handleClickGuardar = () => {
@@ -133,6 +143,9 @@ function Productos({
             arr[index] = data;
           }
           setListaProductos(arr);
+          const lista = document.getElementsByClassName("list-group-item");
+          for (let i = 0; i < lista.length; i++)
+            lista[i].classList.remove("disabled");
         }
       })
       .catch((error) => console.log(error));
