@@ -3,6 +3,8 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import Login from "./Login";
 import Pedidos from "./Pedidos";
+import ListaProductos from "./ListaProductos";
+import Productos from "./Productos";
 
 function App() {
   const [actualtab, setActualTab] = useState("inicio");
@@ -23,6 +25,10 @@ function App() {
       <>
         <Navbar setAccesstoken={setAccesstoken} setActualTab={setActualTab} />
         {actualtab === "pedido" && <Pedidos accesstoken={accesstoken} />}
+        {actualtab === "productos" && (
+          <Productos accesstoken={accesstoken} editable={true} />
+        )}
+        {/* {actualtab === "usuarios" && <Usuarios accesstoken={accesstoken} />} */}
       </>
     );
   }

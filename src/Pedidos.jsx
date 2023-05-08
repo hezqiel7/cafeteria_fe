@@ -260,6 +260,7 @@ function Pedidos({ accesstoken }) {
               setProductosElegidos={setProductosElegidos}
               totalPrecio={totalPrecio}
               setTotalPrecio={setTotalPrecio}
+              editable={false}
             />
           </div>
         </div>
