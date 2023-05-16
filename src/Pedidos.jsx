@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Pedido from "./Pedido";
 import Productos from "./Productos";
 
-function Pedidos({ accesstoken }) {
+function Pedidos({ accesstoken, grupo }) {
   const [pedidos, setPedidos] = useState([]);
   const [mostrarlistos, setMostrarListos] = useState(false);
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
@@ -95,13 +95,20 @@ function Pedidos({ accesstoken }) {
       },
       method: "POST",
       body: JSON.stringify(data),
-    }).then((response) => response.json());
-
-    setNombreCliente(null);
-    setMesa(null);
-    setProductosElegidos([]);
-    setTotalPrecio(0);
-    setMostrarNuevo(false);
+    })
+      .then((response) => {
+        if (response.ok) {
+          setNombreCliente(null);
+          setMesa(null);
+          setProductosElegidos([]);
+          setTotalPrecio(0);
+          setMostrarNuevo(false);
+          let temp = [...pedidos];
+          temp.push(data);
+          setPedidos(temp);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -117,12 +124,17 @@ function Pedidos({ accesstoken }) {
                 id="chkMostrarListos"
                 onChange={(e) => setMostrarListos(e.target.checked)}
                 checked={mostrarlistos}
+                disabled={grupo === "cocina"}
               />
               <label className="form-check-label" htmlFor="chkMostrarListos">
                 Mostrar solo pedidos listos
               </label>
             </div>
-            <button className="btn btn-primary" onClick={handleClickNuevo}>
+            <button
+              className="btn btn-primary"
+              onClick={handleClickNuevo}
+              disabled={grupo === "cocina"}
+            >
               Nuevo
             </button>
           </>
