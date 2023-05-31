@@ -107,9 +107,6 @@ function Productos({
 
   const handleClickGuardar = () => {
     let id = mostrarDetalle.id;
-    if (idMasGrande.current) {
-      id = idMasGrande.current + 1;
-    }
     const nombre = mostrarDetalle.nombre;
     const precio = mostrarDetalle.precio;
 
