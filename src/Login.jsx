@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import coffee from './assets/coffee.png'
 
 const DJHOST = import.meta.env.VITE_DJHOST
 
@@ -45,11 +46,7 @@ function Login(props) {
 
   return (
     <div className="container-login text-center">
-      <img
-        src="src\assets\coffee.png"
-        alt="Logo cafetería"
-        className="w-50 mb-4"
-      />
+      <img src={coffee} alt="Logo cafetería" className="w-50 mb-4" />
       <form method="post" onSubmit={handleSubmit}>
         {/* Email input */}
         <div className="form-floating mb-4">
