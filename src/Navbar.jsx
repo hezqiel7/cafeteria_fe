@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 function Navbar({
   accesstoken,
   setAccesstoken,
   setActualTab,
   grupo,
-  setGrupo,
+  setGrupo
 }) {
   const handleLogOut = (e) => {
-    localStorage.clear();
-    sessionStorage.clear();
-    setAccesstoken(null);
-    setGrupo(null);
-  };
+    localStorage.clear()
+    sessionStorage.clear()
+    setAccesstoken(null)
+    setGrupo(null)
+  }
+
+  const DJHOST = import.meta.env.VITE_DJHOST
+  const adminUrl = `http://${DJHOST}:8000/admin/`
 
   return (
     <nav className="navbar navbar-expand bg-light">
@@ -36,29 +39,29 @@ function Navbar({
             <li className="nav-item">
               <a
                 className="nav-link"
-                onClick={() => setActualTab("pedido")}
+                onClick={() => setActualTab('pedido')}
                 href="#"
               >
                 Pedidos
               </a>
             </li>
-            {grupo && grupo === "administrador" && (
+            {grupo && grupo === 'administrador' && (
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  onClick={() => setActualTab("productos")}
+                  onClick={() => setActualTab('productos')}
                   href="#"
                 >
                   Productos
                 </a>
               </li>
             )}
-            {grupo && grupo === "administrador" && (
+            {grupo && grupo === 'administrador' && (
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  onClick={() => setActualTab("usuarios")}
-                  href="http://localhost:8000/admin/"
+                  onClick={() => setActualTab('usuarios')}
+                  href={adminUrl}
                 >
                   Trabajadores
                 </a>
@@ -73,7 +76,7 @@ function Navbar({
         </div>
       </div>
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

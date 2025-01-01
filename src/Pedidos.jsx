@@ -1,82 +1,82 @@
-import { useEffect, useState } from "react";
-import Pedido from "./Pedido";
-import Productos from "./Productos";
+import { useEffect, useState } from 'react'
+import Pedido from './Pedido'
+import Productos from './Productos'
+
+const DJHOST = import.meta.env.VITE_DJHOST
 
 function Pedidos({ accesstoken, grupo }) {
-  const [pedidos, setPedidos] = useState([]);
-  const [mostrarlistos, setMostrarListos] = useState(false);
-  const [mostrarNuevo, setMostrarNuevo] = useState(false);
-  const [productosElegidos, setProductosElegidos] = useState([]);
-  const [totalPrecio, setTotalPrecio] = useState(0);
-  const [nombreCliente, setNombreCliente] = useState(null);
-  const [mesa, setMesa] = useState(null);
+  const [pedidos, setPedidos] = useState([])
+  const [mostrarlistos, setMostrarListos] = useState(false)
+  const [mostrarNuevo, setMostrarNuevo] = useState(false)
+  const [productosElegidos, setProductosElegidos] = useState([])
+  const [totalPrecio, setTotalPrecio] = useState(0)
+  const [nombreCliente, setNombreCliente] = useState(null)
+  const [mesa, setMesa] = useState(null)
 
   useEffect(() => {
-    fetch("http://localhost:8000/pedidos/", {
+    fetch(`http://${DJHOST}:8000/pedidos/`, {
       headers: {
-        Authorization: "Bearer " + accesstoken,
-      },
+        Authorization: 'Bearer ' + accesstoken
+      }
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.code == "token_not_valid") {
-          sessionStorage.clear();
+        if (data.code == 'token_not_valid') {
+          sessionStorage.clear()
           // Renovar token
         }
-        data.sort(
-          (a, b) => new Date(a.fecha_pedido) - new Date(b.fecha_pedido)
-        );
-        setPedidos(data);
-      });
-  }, []);
+        data.sort((a, b) => new Date(a.fecha_pedido) - new Date(b.fecha_pedido))
+        setPedidos(data)
+      })
+  }, [])
 
   const handleClickNuevo = () => {
-    setMostrarNuevo(!mostrarNuevo);
-  };
+    setMostrarNuevo(!mostrarNuevo)
+  }
 
   const handleCLickQuitar = (e) => {
-    const producto_id = e.target.parentElement.getAttribute("data-producto-id");
-    let arr = [...productosElegidos];
-    const indice = arr.findIndex((p) => p.id == producto_id);
-    const precio = arr[indice].precio;
-    const cantidad = arr[indice].cantidad;
-    setTotalPrecio(totalPrecio - precio * cantidad);
-    arr.splice(indice, 1);
-    setProductosElegidos(arr);
-  };
+    const producto_id = e.target.parentElement.getAttribute('data-producto-id')
+    let arr = [...productosElegidos]
+    const indice = arr.findIndex((p) => p.id == producto_id)
+    const precio = arr[indice].precio
+    const cantidad = arr[indice].cantidad
+    setTotalPrecio(totalPrecio - precio * cantidad)
+    arr.splice(indice, 1)
+    setProductosElegidos(arr)
+  }
 
   const handleChangeCantidad = (e) => {
-    const producto_id = e.target.getAttribute("data-producto-id");
-    let arr = [...productosElegidos];
-    const producto = arr.find((p) => p.id == producto_id);
-    producto.cantidad = e.target.value;
-    setProductosElegidos(arr);
+    const producto_id = e.target.getAttribute('data-producto-id')
+    let arr = [...productosElegidos]
+    const producto = arr.find((p) => p.id == producto_id)
+    producto.cantidad = e.target.value
+    setProductosElegidos(arr)
 
-    setTotalPrecio(calcularPrecioTotal());
-  };
+    setTotalPrecio(calcularPrecioTotal())
+  }
 
   const calcularPrecioTotal = () => {
-    let sum = 0;
+    let sum = 0
     productosElegidos.forEach((producto) => {
-      sum += producto.precio * producto.cantidad;
-    });
-    return sum;
-  };
+      sum += producto.precio * producto.cantidad
+    })
+    return sum
+  }
 
   const handleEnviarPedido = () => {
-    let lista_productos = [];
+    let lista_productos = []
 
     productosElegidos.forEach((producto) => {
       lista_productos.push({
         producto_id: producto.id,
-        cantidad: parseInt(producto.cantidad),
-      });
-    });
+        cantidad: parseInt(producto.cantidad)
+      })
+    })
 
     // Buscar el id mas grande actualmente
     const idMasGrande = pedidos.reduce((anterior, actual) => {
-      return actual.id > anterior.id ? actual : anterior;
-    });
+      return actual.id > anterior.id ? actual : anterior
+    })
 
     const data = {
       id: idMasGrande.id + 1,
@@ -85,31 +85,31 @@ function Pedidos({ accesstoken, grupo }) {
       fecha_pedido: new Date(Date.now()).toISOString(),
       lista_productos: lista_productos,
       total_precio: totalPrecio,
-      nombre_cliente: nombreCliente,
-    };
+      nombre_cliente: nombreCliente
+    }
 
-    fetch("http://localhost:8000/pedidos/", {
+    fetch(`http://${DJHOST}:8000/pedidos/`, {
       headers: {
-        Authorization: "Bearer " + accesstoken,
-        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + accesstoken,
+        'Content-Type': 'application/json'
       },
-      method: "POST",
-      body: JSON.stringify(data),
+      method: 'POST',
+      body: JSON.stringify(data)
     })
       .then((response) => {
         if (response.ok) {
-          setNombreCliente(null);
-          setMesa(null);
-          setProductosElegidos([]);
-          setTotalPrecio(0);
-          setMostrarNuevo(false);
-          let temp = [...pedidos];
-          temp.push(data);
-          setPedidos(temp);
+          setNombreCliente(null)
+          setMesa(null)
+          setProductosElegidos([])
+          setTotalPrecio(0)
+          setMostrarNuevo(false)
+          let temp = [...pedidos]
+          temp.push(data)
+          setPedidos(temp)
         }
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   return (
     <div className="container">
@@ -124,7 +124,7 @@ function Pedidos({ accesstoken, grupo }) {
                 id="chkMostrarListos"
                 onChange={(e) => setMostrarListos(e.target.checked)}
                 checked={mostrarlistos}
-                disabled={grupo === "cocina"}
+                disabled={grupo === 'cocina'}
               />
               <label className="form-check-label" htmlFor="chkMostrarListos">
                 Mostrar solo pedidos listos
@@ -133,7 +133,7 @@ function Pedidos({ accesstoken, grupo }) {
             <button
               className="btn btn-primary"
               onClick={handleClickNuevo}
-              disabled={grupo === "cocina"}
+              disabled={grupo === 'cocina'}
             >
               Nuevo
             </button>
@@ -222,13 +222,13 @@ function Pedidos({ accesstoken, grupo }) {
                           >
                             <i
                               className="fa-solid fa-trash-can"
-                              style={{ color: "#931515" }}
+                              style={{ color: '#931515' }}
                             ></i>
                           </div>
                         </div>
                       </div>
                     </a>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -278,7 +278,7 @@ function Pedidos({ accesstoken, grupo }) {
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default Pedidos;
+export default Pedidos

@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+
+const DJHOST = import.meta.env.VITE_DJHOST
 
 const Pedido = ({
   accesstoken,
@@ -12,27 +14,27 @@ const Pedido = ({
   lista_productos_id,
   pedidos,
   setPedidos,
-  listo,
+  listo
 }) => {
-  let aux = 0;
-  const [productos, setProductos] = useState(null);
-  const [animation, setAnimation] = useState(false);
+  let aux = 0
+  const [productos, setProductos] = useState(null)
+  const [animation, setAnimation] = useState(false)
 
   useEffect(() => {
-    fetch(`http://localhost:8000/pedidos/${id}/productos/`, {
+    fetch(`http://${DJHOST}:8000/pedidos/${id}/productos/`, {
       headers: {
-        Authorization: "Bearer " + accesstoken,
-      },
+        Authorization: 'Bearer ' + accesstoken
+      }
     })
       .then((response) => response.json())
-      .then((data) => setProductos(data));
-  }, []);
+      .then((data) => setProductos(data))
+  }, [])
 
   const handleClickListo = () => {
-    setAnimation(true);
+    setAnimation(true)
     setTimeout(() => {
-      setAnimation(false);
-    }, 908);
+      setAnimation(false)
+    }, 908)
 
     if (!listo) {
       const data = {
@@ -42,51 +44,51 @@ const Pedido = ({
         fecha_pedido: fecha,
         lista_productos: lista_productos_id,
         total_precio: precio,
-        nombre_cliente: cliente,
-      };
+        nombre_cliente: cliente
+      }
 
-      fetch(`http://localhost:8000/pedidos/${id}/`, {
-        method: "PUT",
+      fetch(`http://${DJHOST}:8000/pedidos/${id}/`, {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + accesstoken,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accesstoken
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       })
         .then((response) => {
           if (response.ok) {
-            let tmp = [...pedidos];
-            let ped = tmp.find((p) => p.id === id);
-            ped.listo = true;
-            setPedidos(tmp);
+            let tmp = [...pedidos]
+            let ped = tmp.find((p) => p.id === id)
+            ped.listo = true
+            setPedidos(tmp)
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
     } else {
-      fetch(`http://localhost:8000/pedidos/${id}/`, {
-        method: "DELETE",
+      fetch(`http://${DJHOST}:8000/pedidos/${id}/`, {
+        method: 'DELETE',
         headers: {
-          Authorization: "Bearer " + accesstoken,
-        },
+          Authorization: 'Bearer ' + accesstoken
+        }
       })
         .then((response) => {
           if (response.ok) {
-            let tmp = [...pedidos];
-            let index = tmp.findIndex((p) => p.id === id);
-            tmp.splice(index, 1);
-            setPedidos(tmp);
+            let tmp = [...pedidos]
+            let index = tmp.findIndex((p) => p.id === id)
+            tmp.splice(index, 1)
+            setPedidos(tmp)
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
     }
-  };
+  }
 
   return (
-    <div className="card" style={{ width: "300px" }}>
+    <div className="card" style={{ width: '300px' }}>
       <div className="card-header">
         <p className="card-title mb-0 text-end">{cliente}</p>
         <p className="card-subtitle text-body-secondary text-start">
-          {new Date(fecha).toLocaleString("Es-es")}
+          {new Date(fecha).toLocaleString('Es-es')}
         </p>
       </div>
       <div className="card-body">
@@ -111,7 +113,7 @@ const Pedido = ({
                   </span>
                   {prod.producto.nombre}
                 </li>
-              );
+              )
             })
           ) : (
             <p className="card-text placeholder-glow text-center">
@@ -127,15 +129,15 @@ const Pedido = ({
       </div>
       <div className="card-footer d-grid">
         <button
-          className={"btn ".concat(color)}
+          className={'btn '.concat(color)}
           type="button"
           onClick={handleClickListo}
         >
-          <i className={icon.concat(animation ? "fa-bounce" : "")}></i>
+          <i className={icon.concat(animation ? 'fa-bounce' : '')}></i>
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Pedido;
+export default Pedido

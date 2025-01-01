@@ -1,45 +1,47 @@
-import { useState } from "react";
+import { useState } from 'react'
+
+const DJHOST = import.meta.env.VITE_DJHOST
 
 function Login(props) {
-  const [textError, setTextError] = useState(null);
-  const [usernameError, setUsernameError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+  const [textError, setTextError] = useState(null)
+  const [usernameError, setUsernameError] = useState(null)
+  const [passwordError, setPasswordError] = useState(null)
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Lee los datos del formulario
-    const form = e.target;
-    const formData = new FormData(form);
-    const recuerdame = formData.get("chkRecuerdame");
+    const form = e.target
+    const formData = new FormData(form)
+    const recuerdame = formData.get('chkRecuerdame')
 
-    fetch("http://localhost:8000/api/token/", {
+    fetch(`http://${DJHOST}:8000/api/token/`, {
       method: form.method,
-      body: formData,
+      body: formData
     })
       .then((response) => response.json())
       .then((data) => {
         // Si retornó algún error
         if (data.detail || data.username || data.password) {
-          setTextError(data.detail);
-          setUsernameError(data.username);
-          setPasswordError(data.password);
+          setTextError(data.detail)
+          setUsernameError(data.username)
+          setPasswordError(data.password)
         } else {
           // Si se marco para recordar la sesión se guarda en el localstorage
           // si no en el sessionstorage
           if (recuerdame) {
-            localStorage.setItem("accesstoken", data.access);
-            localStorage.setItem("refreshtoken", data.refresh);
+            localStorage.setItem('accesstoken', data.access)
+            localStorage.setItem('refreshtoken', data.refresh)
           } else {
-            sessionStorage.setItem("accesstoken", data.access);
-            sessionStorage.setItem("refreshtoken", data.refresh);
+            sessionStorage.setItem('accesstoken', data.access)
+            sessionStorage.setItem('refreshtoken', data.refresh)
           }
-          props.setAccesstoken(data.access);
+          props.setAccesstoken(data.access)
           // setRefreshtoken(data.refresh)
         }
       })
-      .catch((error) => console.error(error));
-  };
+      .catch((error) => console.error(error))
+  }
 
   return (
     <div className="container-login text-center">
@@ -122,7 +124,7 @@ function Login(props) {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login

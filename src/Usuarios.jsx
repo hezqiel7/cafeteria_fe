@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+
+const DJHOST = import.meta.env.VITE_DJHOST
 
 function Usuarios({ accesstoken }) {
-  const [usuarios, setUsuarios] = useState(null);
+  const [usuarios, setUsuarios] = useState(null)
 
   useEffect(() => {
-    fetch("http://localhost:8000/usuarios/", {
+    fetch(`http://${DJHOST}:8000/usuarios/`, {
       headers: {
-        Authorization: "Bearer " + accesstoken,
-      },
+        Authorization: 'Bearer ' + accesstoken
+      }
     })
       .then((response) => response.json())
       .then((data) => {
-        setUsuarios(data);
-      });
-  }, []);
+        setUsuarios(data)
+      })
+  }, [])
 
   // Funciones
-  const handleClickAgregar = () => {};
-  const handleClickEditar = () => {};
-  const handleClickEliminar = () => {};
-  const handleClickGuardar = () => {};
+  const handleClickAgregar = () => {}
+  const handleClickEditar = () => {}
+  const handleClickEliminar = () => {}
+  const handleClickGuardar = () => {}
 
   return (
     <div className="container">
@@ -85,7 +87,7 @@ function Usuarios({ accesstoken }) {
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 
-export default Usuarios;
+export default Usuarios

@@ -1,4 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from 'react'
+
+const DJHOST = import.meta.env.VITE_DJHOST
 
 function Productos({
   accesstoken,
@@ -6,150 +8,150 @@ function Productos({
   setProductosElegidos,
   totalPrecio,
   setTotalPrecio,
-  editable,
+  editable
 }) {
-  const productos = useRef(null); // Lista de productos completa
-  const idMasGrande = useRef(null);
-  const [listaProductos, setListaProductos] = useState(null); // Lista de productos con el filtro de busqueda
-  const [mostrarDetalle, setMostrarDetalle] = useState(null);
+  const productos = useRef(null) // Lista de productos completa
+  const idMasGrande = useRef(null)
+  const [listaProductos, setListaProductos] = useState(null) // Lista de productos con el filtro de busqueda
+  const [mostrarDetalle, setMostrarDetalle] = useState(null)
 
   useEffect(() => {
-    fetch("http://localhost:8000/productos/", {
+    fetch(`http://${DJHOST}:8000/productos/`, {
       headers: {
-        Authorization: "Bearer " + accesstoken,
-      },
+        Authorization: 'Bearer ' + accesstoken
+      }
     })
       .then((response) => response.json())
       .then((data) => {
-        productos.current = data;
-        setListaProductos(data);
-        setMostrarDetalle(data[0]);
-      });
-  }, []);
+        productos.current = data
+        setListaProductos(data)
+        setMostrarDetalle(data[0])
+      })
+  }, [])
 
   const handleClickProducto = (producto) => {
     if (!editable) {
-      let arr = [...productosElegidos];
+      let arr = [...productosElegidos]
       arr.push({
         id: producto.id,
         nombre: producto.nombre,
         precio: producto.precio,
-        cantidad: 1,
-      });
-      setProductosElegidos(arr);
-      setTotalPrecio(totalPrecio + producto.precio);
+        cantidad: 1
+      })
+      setProductosElegidos(arr)
+      setTotalPrecio(totalPrecio + producto.precio)
     } else {
-      setMostrarDetalle(producto);
+      setMostrarDetalle(producto)
     }
-  };
+  }
 
   const handleChangeBuscar = (e) => {
-    const data = e.target.value;
+    const data = e.target.value
     let lista_productos = productos.current.filter((p) => {
       // Normalizar para ignorar cualquier tilde
       let nombre = p.nombre
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
       let buscado = data
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      return nombre.includes(buscado);
-    });
-    setListaProductos(lista_productos);
-  };
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+      return nombre.includes(buscado)
+    })
+    setListaProductos(lista_productos)
+  }
 
   const handleClickAgregar = () => {
     // Buscar el id mas grande actualmente
     idMasGrande.current = listaProductos.reduce((anterior, actual) => {
-      return actual.id > anterior.id ? actual : anterior;
-    }).id;
+      return actual.id > anterior.id ? actual : anterior
+    }).id
 
-    const lista = document.getElementsByClassName("list-group-item");
-    for (let i = 0; i < lista.length; i++) lista[i].classList.add("disabled");
+    const lista = document.getElementsByClassName('list-group-item')
+    for (let i = 0; i < lista.length; i++) lista[i].classList.add('disabled')
 
     setMostrarDetalle({
       id: idMasGrande.current + 1,
-      nombre: "",
-      precio: "",
-    });
-  };
+      nombre: '',
+      precio: ''
+    })
+  }
 
   const handleClickEliminar = () => {
     if (!idMasGrande.current) {
-      const id = mostrarDetalle.id;
+      const id = mostrarDetalle.id
 
-      fetch(`http://localhost:8000/productos/${id}/`, {
+      fetch(`http://${DJHOST}:8000/productos/${id}/`, {
         headers: {
-          Authorization: "Bearer " + accesstoken,
+          Authorization: 'Bearer ' + accesstoken
         },
-        method: "DELETE",
+        method: 'DELETE'
       })
         .then((response) => {
           if (response.ok) {
-            const arr = [...listaProductos];
-            const index = arr.findIndex((p) => p.id === id);
-            arr.splice(index, 1);
-            setListaProductos(arr);
-            setMostrarDetalle(listaProductos[0]);
+            const arr = [...listaProductos]
+            const index = arr.findIndex((p) => p.id === id)
+            arr.splice(index, 1)
+            setListaProductos(arr)
+            setMostrarDetalle(listaProductos[0])
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
     } else {
-      const lista = document.getElementsByClassName("list-group-item");
+      const lista = document.getElementsByClassName('list-group-item')
       for (let i = 0; i < lista.length; i++)
-        lista[i].classList.remove("disabled");
-      idMasGrande.current = null;
-      setMostrarDetalle(listaProductos[0]);
+        lista[i].classList.remove('disabled')
+      idMasGrande.current = null
+      setMostrarDetalle(listaProductos[0])
     }
-  };
+  }
 
   const handleClickGuardar = () => {
-    let id = mostrarDetalle.id;
-    const nombre = mostrarDetalle.nombre;
-    const precio = mostrarDetalle.precio;
+    let id = mostrarDetalle.id
+    const nombre = mostrarDetalle.nombre
+    const precio = mostrarDetalle.precio
 
     const data = {
       id: id,
       nombre: nombre,
-      precio: parseInt(precio),
-    };
+      precio: parseInt(precio)
+    }
 
     fetch(
       idMasGrande.current
-        ? "http://localhost:8000/productos/"
-        : `http://localhost:8000/productos/${id}/`,
+        ? `http://${DJHOST}:8000/productos/`
+        : `http://${DJHOST}:8000/productos/${id}/`,
       {
         headers: {
-          Authorization: "Bearer " + accesstoken,
-          "Content-Type": "application/json",
+          Authorization: 'Bearer ' + accesstoken,
+          'Content-Type': 'application/json'
         },
-        method: idMasGrande.current ? "POST" : "PUT",
-        body: JSON.stringify(data),
+        method: idMasGrande.current ? 'POST' : 'PUT',
+        body: JSON.stringify(data)
       }
     )
       .then((response) => {
         if (response.ok) {
-          const arr = [...listaProductos];
+          const arr = [...listaProductos]
           if (idMasGrande.current) {
-            arr.push(data);
-            idMasGrande.current = null;
+            arr.push(data)
+            idMasGrande.current = null
           } else {
-            let index = arr.findIndex((p) => p.id === id);
-            arr[index] = data;
+            let index = arr.findIndex((p) => p.id === id)
+            arr[index] = data
           }
-          setListaProductos(arr);
-          const lista = document.getElementsByClassName("list-group-item");
+          setListaProductos(arr)
+          const lista = document.getElementsByClassName('list-group-item')
           for (let i = 0; i < lista.length; i++)
-            lista[i].classList.remove("disabled");
+            lista[i].classList.remove('disabled')
         }
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   return (
-    <div className={editable ? "container" : ""}>
+    <div className={editable ? 'container' : ''}>
       {editable && (
         <div className="d-grid">
           <button
@@ -173,10 +175,10 @@ function Productos({
                 onChange={(e) =>
                   setMostrarDetalle({
                     ...mostrarDetalle,
-                    nombre: e.target.value,
+                    nombre: e.target.value
                   })
                 }
-                value={mostrarDetalle ? mostrarDetalle.nombre : ""}
+                value={mostrarDetalle ? mostrarDetalle.nombre : ''}
                 id="nombre"
               />
             </div>
@@ -190,10 +192,10 @@ function Productos({
                 onChange={(e) =>
                   setMostrarDetalle({
                     ...mostrarDetalle,
-                    precio: e.target.value,
+                    precio: e.target.value
                   })
                 }
-                value={mostrarDetalle ? mostrarDetalle.precio : ""}
+                value={mostrarDetalle ? mostrarDetalle.precio : ''}
                 id="precio"
               />
             </div>
@@ -213,7 +215,7 @@ function Productos({
             </div>
           </div>
         )}
-        <div className={editable ? "col col-md-6 order-md-1" : "w-100"}>
+        <div className={editable ? 'col col-md-6 order-md-1' : 'w-100'}>
           <div className="input-group rounded mb-2">
             <input
               type="search"
@@ -229,11 +231,11 @@ function Productos({
             {listaProductos &&
               listaProductos.map((producto) => (
                 <li
-                  className={"list-group-item list-group-item-action list-group-item-info ".concat(
+                  className={'list-group-item list-group-item-action list-group-item-info '.concat(
                     productosElegidos &&
                       productosElegidos.find((p) => p.id === producto.id)
-                      ? "disabled"
-                      : ""
+                      ? 'disabled'
+                      : ''
                   )}
                   key={producto.id}
                   onClick={() => handleClickProducto(producto)}
@@ -245,7 +247,7 @@ function Productos({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Productos;
+export default Productos
