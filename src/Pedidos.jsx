@@ -74,9 +74,12 @@ function Pedidos({ accesstoken, grupo }) {
     })
 
     // Buscar el id mas grande actualmente
-    const idMasGrande = pedidos.reduce((anterior, actual) => {
-      return actual.id > anterior.id ? actual : anterior
-    })
+    let idMasGrande = 0
+    if (pedidos.length > 0) {
+      idMasGrande = pedidos.reduce((anterior, actual) => {
+        return actual.id > anterior.id ? actual : anterior
+      })
+    }
 
     const data = {
       id: idMasGrande.id + 1,
