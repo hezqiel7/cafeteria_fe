@@ -16,7 +16,7 @@ function Productos({
   const [mostrarDetalle, setMostrarDetalle] = useState(null)
 
   useEffect(() => {
-    fetch(`http://${DJHOST}:8000/productos/`, {
+    fetch(`https://${DJHOST}:8000/productos/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken
       }
@@ -82,7 +82,7 @@ function Productos({
     if (!idMasGrande.current) {
       const id = mostrarDetalle.id
 
-      fetch(`http://${DJHOST}:8000/productos/${id}/`, {
+      fetch(`https://${DJHOST}:8000/productos/${id}/`, {
         headers: {
           Authorization: 'Bearer ' + accesstoken
         },
@@ -120,8 +120,8 @@ function Productos({
 
     fetch(
       idMasGrande.current
-        ? `http://${DJHOST}:8000/productos/`
-        : `http://${DJHOST}:8000/productos/${id}/`,
+        ? `https://${DJHOST}:8000/productos/`
+        : `https://${DJHOST}:8000/productos/${id}/`,
       {
         headers: {
           Authorization: 'Bearer ' + accesstoken,

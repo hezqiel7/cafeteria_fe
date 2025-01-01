@@ -14,7 +14,7 @@ function Pedidos({ accesstoken, grupo }) {
   const [mesa, setMesa] = useState(null)
 
   useEffect(() => {
-    fetch(`http://${DJHOST}:8000/pedidos/`, {
+    fetch(`https://${DJHOST}:8000/pedidos/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken
       }
@@ -88,7 +88,7 @@ function Pedidos({ accesstoken, grupo }) {
       nombre_cliente: nombreCliente
     }
 
-    fetch(`http://${DJHOST}:8000/pedidos/`, {
+    fetch(`https://${DJHOST}:8000/pedidos/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken,
         'Content-Type': 'application/json'

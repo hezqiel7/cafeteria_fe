@@ -26,7 +26,7 @@ function App() {
 
   if (accesstoken) {
     const user_id = jwt_decode(accesstoken).user_id
-    fetch(`http://${DJHOST}:8000/usuarios/${user_id}/grupos/`, {
+    fetch(`https://${DJHOST}:8000/usuarios/${user_id}/grupos/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken
       }
