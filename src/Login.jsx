@@ -16,7 +16,7 @@ function Login(props) {
     const formData = new FormData(form)
     const recuerdame = formData.get('chkRecuerdame')
 
-    fetch(`https://${DJHOST}:8000/api/token/`, {
+    fetch(`https://${DJHOST}/api/token/`, {
       method: form.method,
       body: formData
     })

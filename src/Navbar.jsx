@@ -15,7 +15,7 @@ function Navbar({
   }
 
   const DJHOST = import.meta.env.VITE_DJHOST
-  const adminUrl = `https://${DJHOST}:8000/admin/`
+  const adminUrl = `https://${DJHOST}/admin/`
 
   return (
     <nav className="navbar navbar-expand bg-light">

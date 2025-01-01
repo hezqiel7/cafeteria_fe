@@ -21,7 +21,7 @@ const Pedido = ({
   const [animation, setAnimation] = useState(false)
 
   useEffect(() => {
-    fetch(`https://${DJHOST}:8000/pedidos/${id}/productos/`, {
+    fetch(`https://${DJHOST}/pedidos/${id}/productos/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken
       }
@@ -47,7 +47,7 @@ const Pedido = ({
         nombre_cliente: cliente
       }
 
-      fetch(`https://${DJHOST}:8000/pedidos/${id}/`, {
+      fetch(`https://${DJHOST}/pedidos/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const Pedido = ({
         })
         .catch((error) => console.error(error))
     } else {
-      fetch(`https://${DJHOST}:8000/pedidos/${id}/`, {
+      fetch(`https://${DJHOST}/pedidos/${id}/`, {
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + accesstoken

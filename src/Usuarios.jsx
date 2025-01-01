@@ -6,7 +6,7 @@ function Usuarios({ accesstoken }) {
   const [usuarios, setUsuarios] = useState(null)
 
   useEffect(() => {
-    fetch(`https://${DJHOST}:8000/usuarios/`, {
+    fetch(`https://${DJHOST}/usuarios/`, {
       headers: {
         Authorization: 'Bearer ' + accesstoken
       }
