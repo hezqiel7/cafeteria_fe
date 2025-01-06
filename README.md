@@ -8,6 +8,17 @@ El frontend de la aplicación de cafetería es una interfaz de usuario desarroll
 - **Cocineros**: Visualizan los pedidos, marcan pedidos como listos para entregar o entregados.
 - **Administradores**: Gestionan productos, precios y cuentas de usuarios.
 
+## Live Demo
+[Frontend](https://cafeteria-fe.onrender.com/)
+
+[Backend](https://cafeteria-be.onrender.com/)
+
+### Usuarios
+```
+    admin:admin
+    recepcion:recepcion
+    cocinero:cocinero
+```
 ## Requisitos previos
 - Node.js y npm instalados.
 - El backend de la aplicación debe estar corriendo.
